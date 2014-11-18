@@ -18,10 +18,8 @@ import java.util.Set;
  * of type {@link no.kantega.workshop.akka.task5.PrimeAnswer}.
  *
  * The actual work is delegated to {@link no.kantega.workshop.akka.task5.PrimeNumberWorkerActor}.
- *
- * HINT: Start by un-commenting the class we should extend.
  */
-public final class PrimeNumberActor /* extends UntypedActorWithStash */ {
+public final class PrimeNumberActor extends UntypedActorWithStash {
 
     /**
      * This is a map of all numbers we have calculated so far. The boolean tells us if the integer is prime or not.
@@ -33,5 +31,28 @@ public final class PrimeNumberActor /* extends UntypedActorWithStash */ {
      */
     private final Set<Integer> numbersCurrentlyCalulating = new HashSet<>();
 
-    // Your code goes here...
+    /**
+     * This is a reference to the worker actor, or pool of worker actors with a router.
+     */
+    private final ActorRef workerActor;
+
+    public PrimeNumberActor() {
+        // You might need to modify this line, to create more than one actor...
+        this.workerActor = context().actorOf(Props.create(PrimeNumberWorkerActor.class), "PrimeNumberWorker");
+    }
+
+    @Override
+    public void onReceive(Object message) {
+
+        if (message instanceof Integer) {
+
+            Integer number = (Integer) message;
+            // Your code goes here...
+
+        } else if (message instanceof PrimeAnswer) {
+
+            PrimeAnswer primeAnswer = (PrimeAnswer) message;
+            // Your code goes here...
+        }
+    }
 }

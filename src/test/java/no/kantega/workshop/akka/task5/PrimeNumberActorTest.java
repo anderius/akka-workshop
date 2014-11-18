@@ -52,7 +52,7 @@ public class PrimeNumberActorTest extends BaseAkkeTest {
     }
 
     @Test
-    public void test() {
+    public void same_Number_Should_Be_Fast_Second_Time() {
 
         // Given:
         ActorRef actorRef = system.actorOf(Props.create(PrimeNumberActor.class));
@@ -74,6 +74,29 @@ public class PrimeNumberActorTest extends BaseAkkeTest {
         // This should use the already calculated answer, and we wait only a short time for the reply:
         PrimeAnswer answer = expectMsgClass(FiniteDuration.apply(10, TimeUnit.MILLISECONDS), PrimeAnswer.class);
         assertThat(answer.isPrime).isTrue();
+    }
+
+    /**
+     * This test is a bit fragile, but it basically tests that you are using a pool of worker actors and a router (for example
+     * {@link akka.routing.SmallestMailboxPool}.
+     */
+    @Test(timeout = 10_000)
+    public void routing_Should_Make_Multiple_Calculations_In_Parallell() {
+
+        // Given:
+        ActorRef actorRef = system.actorOf(Props.create(PrimeNumberActor.class));
+
+        // When:
+        for (int i : TEST_NUMBERS.keySet()) {
+            actorRef.tell(i, getTestActor());
+        }
+
+        // Expect:
+        verifyExpectedMessage();
+        verifyExpectedMessage();
+        verifyExpectedMessage();
+        verifyExpectedMessage();
+        verifyExpectedMessage();
     }
 
     private void verifyExpectedMessage() {

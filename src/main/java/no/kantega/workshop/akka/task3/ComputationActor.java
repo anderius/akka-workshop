@@ -26,17 +26,13 @@ final class ComputationActor extends UntypedActor {
 
     @Override
     public void onReceive(Object message) {
-        if (message instanceof Integer) {
-            worker.forward(message, context());
-        }
+        // Your code goes here...
     }
 
     @Override
     public SupervisorStrategy supervisorStrategy() {
-        // here we tell Akka to restart the child actor no matter what happens:
-        return new OneForOneStrategy(-1, Duration.Inf(), DeciderBuilder
-                .matchAny(o -> SupervisorStrategy.resume())
-        .build());
+        // Your code goes here, instead of the call to super...
+        return super.supervisorStrategy();
     }
 
     /**

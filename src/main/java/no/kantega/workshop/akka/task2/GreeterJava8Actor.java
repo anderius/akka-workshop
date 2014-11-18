@@ -17,10 +17,6 @@ import static akka.japi.pf.ReceiveBuilder.match;
 final class GreeterJava8Actor extends AbstractActor {
 
     GreeterJava8Actor() {
-        receive(
-                match(Greeting.class, m -> {
-                    sender().tell(new Answer("Hello, " + m.name + "!"), self());
-                }).build()
-        );
+        // Your code goes here...
     }
 }

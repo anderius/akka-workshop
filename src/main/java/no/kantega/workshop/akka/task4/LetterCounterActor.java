@@ -5,7 +5,7 @@ import akka.persistence.UntypedPersistentActor;
 import java.io.Serializable;
 
 /**
- * In tthis task we look at Akka Persistence. We receive commands that are words ({@link java.lang.String}), and we
+ * In this task we look at Akka Persistence. We receive commands that are words ({@link java.lang.String}), and we
  * maintain an internal state being the number of letters in the longest word received.
  *
  * Notice that we extend {@link akka.persistence.UntypedPersistentActor}, and no longer override
@@ -16,29 +16,16 @@ import java.io.Serializable;
  */
 public final class LetterCounterActor extends UntypedPersistentActor {
 
-    /**
-     * Number of letters in the longest word received:
-     */
-    private Integer longestWord = 0;
-
     @Override
     public void onReceiveRecover(Object event) {
 
-        if (event instanceof Integer) {
-            longestWord = (Integer) event;
-        }
+        // Your code goes here...
     }
 
     @Override
     public void onReceiveCommand(Object command) {
-        if (command instanceof String) {
-            int length = ((String) command).length();
-            if (length > longestWord) {
-                persist(length, param -> longestWord = param);
-            }
-        } else if (command instanceof GetLongestWordCount) {
-            sender().tell(longestWord, self());
-        }
+
+        // Your code goes here...
     }
 
     @Override

@@ -15,11 +15,6 @@ final class GreeterActor extends UntypedActor {
     @Override
     public void onReceive(Object message) {
 
-        if (message instanceof Greeting) {
-
-            Greeting greeting = (Greeting) message;
-            Answer answer = new Answer("Hello, " + greeting.name + "!");
-            sender().tell(answer, self());
-        }
+        // Your code goes here...
     }
 }

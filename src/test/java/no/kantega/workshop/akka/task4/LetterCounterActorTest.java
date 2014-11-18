@@ -23,7 +23,7 @@ public class LetterCounterActorTest {
                 ConfigValueFactory.fromAnyRef("akka.persistence.journal.inmem")));
     }
     @Test
-    public void example() {
+    public void longest_Word_Is_Remembered_After_Restart_Of_Actor() {
 
         new JavaTestKit(system) {{
 

@@ -27,12 +27,7 @@ final class ComputationActor extends UntypedActor {
     @Override
     public void onReceive(Object message) {
         // Your code goes here...
-    }
-
-    @Override
-    public SupervisorStrategy supervisorStrategy() {
-        // Your code goes here, instead of the call to super...
-        return super.supervisorStrategy();
+        worker.forward(message, context());
     }
 
     /**

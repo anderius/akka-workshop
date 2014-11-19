@@ -45,6 +45,13 @@ public final class PrimeNumberActor extends UntypedActorWithStash {
      */
     private final Set<Integer> numbersCurrentlyCalulating = new HashSet<>();
 
+    private final ActorRef workerActor;
+
+    PrimeNumberActor() {
+        this.workerActor = context().actorOf(Props.create(PrimeNumberWorkerActor.class)
+                .withRouter(new SmallestMailboxPool(10)));
+    }
+
     @Override
     public void onReceive(Object message) {
 
@@ -52,11 +59,24 @@ public final class PrimeNumberActor extends UntypedActorWithStash {
 
             Integer number = (Integer) message;
             // Your code goes here...
+            if (knownAnswers.containsKey(number)) {
+                sender().tell(new PrimeAnswer(number, knownAnswers.get(number)), self());
+
+            } else if (numbersCurrentlyCalulating.contains(number)) {
+                stash();
+
+            } else {
+                numbersCurrentlyCalulating.add(number);
+                workerActor.tell(number, self());
+                stash();
+            }
 
         } else if (message instanceof PrimeAnswer) {
 
             PrimeAnswer primeAnswer = (PrimeAnswer) message;
             // Your code goes here...
+            knownAnswers.put(primeAnswer.number, primeAnswer.isPrime);
+            unstashAll();
         }
     }
 }

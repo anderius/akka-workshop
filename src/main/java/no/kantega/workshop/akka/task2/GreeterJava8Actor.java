@@ -1,6 +1,7 @@
 package no.kantega.workshop.akka.task2;
 
 import akka.actor.AbstractActor;
+import akka.japi.pf.ReceiveBuilder;
 import no.kantega.workshop.akka.messages.Answer;
 import no.kantega.workshop.akka.messages.Greeting;
 
@@ -20,5 +21,8 @@ final class GreeterJava8Actor extends AbstractActor {
 
     GreeterJava8Actor() {
         // Your code goes here...
+        receive(ReceiveBuilder
+                .match(Greeting.class, greeting -> sender().tell(new Answer("Hello, " + greeting.name + "!"), self()))
+                .build());
     }
 }

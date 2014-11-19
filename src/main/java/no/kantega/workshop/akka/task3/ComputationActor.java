@@ -1,6 +1,7 @@
 package no.kantega.workshop.akka.task3;
 
 import akka.actor.*;
+import akka.japi.Function;
 import akka.japi.pf.DeciderBuilder;
 import scala.concurrent.duration.Duration;
 
@@ -32,6 +33,11 @@ final class ComputationActor extends UntypedActor {
     @Override
     public void onReceive(Object message) {
         worker.forward(message, context());
+    }
+
+    @Override
+    public SupervisorStrategy supervisorStrategy() {
+        return new OneForOneStrategy(-1, Duration.Inf(), throwable -> SupervisorStrategy.stop());
     }
 
     /**

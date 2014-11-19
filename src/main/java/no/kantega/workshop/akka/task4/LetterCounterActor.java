@@ -23,16 +23,29 @@ import java.io.Serializable;
  */
 public final class LetterCounterActor extends UntypedPersistentActor {
 
+    private int longestWordCount = 0;
+
     @Override
     public void onReceiveRecover(Object event) {
 
         // Your code goes here...
+        if (event instanceof Integer) {
+            longestWordCount = (Integer) event;
+        }
     }
 
     @Override
     public void onReceiveCommand(Object command) {
 
         // Your code goes here...
+        if (command instanceof String) {
+            int length = ((String) command).length();
+            if (length > longestWordCount) {
+                persist(length, newLongestWord -> longestWordCount = newLongestWord);
+            }
+        } else if (command instanceof GetLongestWordCount) {
+            sender().tell(longestWordCount, self());
+        }
     }
 
     @Override

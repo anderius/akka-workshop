@@ -30,7 +30,7 @@ import java.util.Set;
  *
  * http://doc.akka.io/docs/akka/current/java/routing.html
  *
- * Know that instead of configuration as in the doc, you can create an actor with a router using
+ * Know that instead of using the configuration files as in the doc, you can create an actor with a router using
  * {@link akka.actor.Props#withRouter(akka.routing.RouterConfig)}.
  */
 public final class PrimeNumberActor extends UntypedActorWithStash {

@@ -11,6 +11,9 @@ import static akka.japi.pf.ReceiveBuilder.match;
  * {@link #supervisorStrategy()}.
  *
  * This actor delegates work to {@link no.kantega.workshop.akka.task3.ComputationActor.ComputationWorker}.
+ *
+ * Your task is to stop the worker actor when an {@link java.lang.ArithmeticException} occurs. Default is to resume the
+ * actor.
  */
 final class ComputationActor extends UntypedActor {
 
@@ -21,12 +24,11 @@ final class ComputationActor extends UntypedActor {
      * {@link no.kantega.workshop.akka.task3.ComputationActor.ComputationWorker}.
      */
     ComputationActor() {
-        worker = context().system().actorOf(Props.create(ComputationWorker.class));
+        worker = context().actorOf(Props.create(ComputationWorker.class));
     }
 
     @Override
     public void onReceive(Object message) {
-        // Your code goes here...
         worker.forward(message, context());
     }
 

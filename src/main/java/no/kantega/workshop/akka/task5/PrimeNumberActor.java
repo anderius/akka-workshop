@@ -18,6 +18,13 @@ import java.util.Set;
  * of type {@link no.kantega.workshop.akka.task5.PrimeAnswer}.
  *
  * The actual work is delegated to {@link no.kantega.workshop.akka.task5.PrimeNumberWorkerActor}.
+ *
+ * Start by creating a field which is the worker actor, and create it in the constructor og in the {@link #preStart()}-method.
+ *
+ * Then start implementing the {@link #onReceive(Object)}-method.
+ *
+ * You can stash away the current message with {@link #stash()}, and start receiving all previously stashed messages with
+ * {@link #unstashAll()}.
  */
 public final class PrimeNumberActor extends UntypedActorWithStash {
 
@@ -30,16 +37,6 @@ public final class PrimeNumberActor extends UntypedActorWithStash {
      * This is the set of numbers we are currently calculating.
      */
     private final Set<Integer> numbersCurrentlyCalulating = new HashSet<>();
-
-    /**
-     * This is a reference to the worker actor, or pool of worker actors with a router.
-     */
-    private final ActorRef workerActor;
-
-    public PrimeNumberActor() {
-        // You might need to modify this line, to create more than one actor...
-        this.workerActor = context().actorOf(Props.create(PrimeNumberWorkerActor.class), "PrimeNumberWorker");
-    }
 
     @Override
     public void onReceive(Object message) {

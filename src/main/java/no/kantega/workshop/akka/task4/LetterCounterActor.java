@@ -13,6 +13,13 @@ import java.io.Serializable;
  *
  * This actor answers to messages of the type {@link no.kantega.workshop.akka.task4.LetterCounterActor.GetLongestWordCount},
  * and replies with an {@link java.lang.Integer}.
+ *
+ * In short, you have to persist events in {@link #onReceiveCommand(Object)}, and give a callback that is updating the
+ * internal state (for instance you can create a field of type {@link java.lang.Integer}. Then the same events are played
+ * back during startup in {@link #onReceiveRecover(Object)}, and you just have to modify the state the same way as you did
+ * in the callback.
+ *
+ * For more information, see http://doc.akka.io/docs/akka/current/java/persistence.html.
  */
 public final class LetterCounterActor extends UntypedPersistentActor {
 

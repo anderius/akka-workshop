@@ -25,6 +25,13 @@ import java.util.Set;
  *
  * You can stash away the current message with {@link #stash()}, and start receiving all previously stashed messages with
  * {@link #unstashAll()}.
+ *
+ * Finally, try to make the code faster by using a router. You can read about routers here:
+ *
+ * http://doc.akka.io/docs/akka/current/java/routing.html
+ *
+ * Know that instead of configuration as in the doc, you can create an actor with a router using
+ * {@link akka.actor.Props#withRouter(akka.routing.RouterConfig)}.
  */
 public final class PrimeNumberActor extends UntypedActorWithStash {
 

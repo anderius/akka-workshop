@@ -22,6 +22,8 @@ final class ComputationActor extends UntypedActor {
     /**
      * Creates a new instance, which creates a child Actor of type
      * {@link no.kantega.workshop.akka.task3.ComputationActor.ComputationWorker}.
+     *
+     * if you used context().system().actorOf, you would NOT create a child actor, but a top-level actor.
      */
     ComputationActor() {
         worker = context().actorOf(Props.create(ComputationWorker.class));

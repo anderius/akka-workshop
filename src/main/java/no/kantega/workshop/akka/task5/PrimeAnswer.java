@@ -8,6 +8,8 @@ import java.io.Serializable;
  *
  * Since this is typically done from outside the package, this class is public. The constructor is package private,
  * as it should only be created by components in this package.
+ *
+ * You don't have to modify this class!
  */
 public final class PrimeAnswer implements Serializable {
 

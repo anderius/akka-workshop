@@ -8,6 +8,12 @@ import no.kantega.workshop.akka.messages.Greeting;
  * In this class, simply reply to {@link no.kantega.workshop.akka.messages.Greeting} with an
  * {@link no.kantega.workshop.akka.messages.Answer}.
  *
+ * You have the sender available to you using the method {@link #sender()}, which is only valid inside the
+ * {@link #onReceive(Object)}-method.
+ *
+ * The actorRef for the actor you are currently in (which you should reply FROM), is available as {@link #self()}.
+ * That method is always valid.
+ *
  * The content of the answer should be 'Hello, {@link no.kantega.workshop.akka.messages.Greeting#name}!'.
  */
 final class GreeterActor extends UntypedActor {
@@ -15,11 +21,6 @@ final class GreeterActor extends UntypedActor {
     @Override
     public void onReceive(Object message) {
 
-        if (message instanceof Greeting) {
-
-            Greeting greeting = (Greeting) message;
-            Answer answer = new Answer("Hello, " + greeting.name + "!");
-            sender().tell(answer, self());
-        }
+        // Your code goes here...
     }
 }

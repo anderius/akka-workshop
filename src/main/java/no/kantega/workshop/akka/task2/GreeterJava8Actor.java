@@ -12,15 +12,13 @@ import static akka.japi.pf.ReceiveBuilder.match;
  *
  * Notice that we extends {@link akka.actor.AbstractActor} instead of {@link akka.actor.UntypedActor}.
  *
- * Documentation on Akka Actors with lanbda: http://doc.akka.io/docs/akka/snapshot/java/lambda-actors.html.
+ * Documentation on Akka Actors with lambda: http://doc.akka.io/docs/akka/snapshot/java/lambda-actors.html.
+ *
+ * If you don't know lambdas, use some time on this task, ask for help, because lamdbas make Akka much more pleasant!
  */
 final class GreeterJava8Actor extends AbstractActor {
 
     GreeterJava8Actor() {
-        receive(
-                match(Greeting.class, m -> {
-                    sender().tell(new Answer("Hello, " + m.name + "!"), self());
-                }).build()
-        );
+        // Your code goes here...
     }
 }

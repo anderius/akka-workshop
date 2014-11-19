@@ -18,6 +18,20 @@ import java.util.Set;
  * of type {@link no.kantega.workshop.akka.task5.PrimeAnswer}.
  *
  * The actual work is delegated to {@link no.kantega.workshop.akka.task5.PrimeNumberWorkerActor}.
+ *
+ * Start by creating a field which is the worker actor, and create it in the constructor og in the {@link #preStart()}-method.
+ *
+ * Then start implementing the {@link #onReceive(Object)}-method.
+ *
+ * You can stash away the current message with {@link #stash()}, and start receiving all previously stashed messages with
+ * {@link #unstashAll()}.
+ *
+ * Finally, try to make the code faster by using a router. You can read about routers here:
+ *
+ * http://doc.akka.io/docs/akka/current/java/routing.html
+ *
+ * Know that instead of using the configuration files as in the doc, you can create an actor with a router using
+ * {@link akka.actor.Props#withRouter(akka.routing.RouterConfig)}.
  */
 public final class PrimeNumberActor extends UntypedActorWithStash {
 
@@ -31,45 +45,18 @@ public final class PrimeNumberActor extends UntypedActorWithStash {
      */
     private final Set<Integer> numbersCurrentlyCalulating = new HashSet<>();
 
-    /**
-     * This is a reference to the worker actor, or pool of worker actors with a router.
-     */
-    private final ActorRef workerActor;
-
-    public PrimeNumberActor() {
-        this.workerActor = context().actorOf(Props.create(PrimeNumberWorkerActor.class)
-                .withRouter(new SmallestMailboxPool(10)), "PrimeNumberWorker");
-    }
-
     @Override
-    public void onReceive(Object message) throws Exception {
+    public void onReceive(Object message) {
 
         if (message instanceof Integer) {
 
             Integer number = (Integer) message;
+            // Your code goes here...
 
-            if (knownAnswers.containsKey(number)) {
-                // we know the answer, just reply:
-                sender().tell(new PrimeAnswer(number, knownAnswers.get(number)), self());
-
-            } else if (numbersCurrentlyCalulating.contains(number)) {
-                // we are currently calculating the answer, we need to answer later:
-                stash();
-
-            } else {
-                // this is a new number we need to calculate:
-                workerActor.tell(number, self());
-                numbersCurrentlyCalulating.add(number);
-                // we stash away the message, and waits for the answer:
-                stash();
-            }
         } else if (message instanceof PrimeAnswer) {
 
             PrimeAnswer primeAnswer = (PrimeAnswer) message;
-            knownAnswers.put(primeAnswer.number, primeAnswer.isPrime);
-            // if needed, we could use a filter when unstashing, to only process requests after the number we
-            // just calculated. That is an optional improvement.
-            unstashAll();
+            // Your code goes here...
         }
     }
 }

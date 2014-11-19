@@ -11,6 +11,9 @@ import static akka.japi.pf.ReceiveBuilder.match;
  * {@link #supervisorStrategy()}.
  *
  * This actor delegates work to {@link no.kantega.workshop.akka.task3.ComputationActor.ComputationWorker}.
+ *
+ * Your task is to stop the worker actor when an {@link java.lang.ArithmeticException} occurs. Default is to resume the
+ * actor.
  */
 final class ComputationActor extends UntypedActor {
 
@@ -19,24 +22,16 @@ final class ComputationActor extends UntypedActor {
     /**
      * Creates a new instance, which creates a child Actor of type
      * {@link no.kantega.workshop.akka.task3.ComputationActor.ComputationWorker}.
+     *
+     * if you used context().system().actorOf, you would NOT create a child actor, but a top-level actor.
      */
     ComputationActor() {
-        worker = context().system().actorOf(Props.create(ComputationWorker.class));
+        worker = context().actorOf(Props.create(ComputationWorker.class));
     }
 
     @Override
     public void onReceive(Object message) {
-        if (message instanceof Integer) {
-            worker.forward(message, context());
-        }
-    }
-
-    @Override
-    public SupervisorStrategy supervisorStrategy() {
-        // here we tell Akka to restart the child actor no matter what happens:
-        return new OneForOneStrategy(-1, Duration.Inf(), DeciderBuilder
-                .matchAny(o -> SupervisorStrategy.resume())
-        .build());
+        worker.forward(message, context());
     }
 
     /**

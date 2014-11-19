@@ -5,7 +5,7 @@ import akka.persistence.UntypedPersistentActor;
 import java.io.Serializable;
 
 /**
- * In tthis task we look at Akka Persistence. We receive commands that are words ({@link java.lang.String}), and we
+ * In this task we look at Akka Persistence. We receive commands that are words ({@link java.lang.String}), and we
  * maintain an internal state being the number of letters in the longest word received.
  *
  * Notice that we extend {@link akka.persistence.UntypedPersistentActor}, and no longer override
@@ -13,32 +13,26 @@ import java.io.Serializable;
  *
  * This actor answers to messages of the type {@link no.kantega.workshop.akka.task4.LetterCounterActor.GetLongestWordCount},
  * and replies with an {@link java.lang.Integer}.
+ *
+ * In short, you have to persist events in {@link #onReceiveCommand(Object)}, and give a callback that is updating the
+ * internal state (for instance you can create a field of type {@link java.lang.Integer}. Then the same events are played
+ * back during startup in {@link #onReceiveRecover(Object)}, and you just have to modify the state the same way as you did
+ * in the callback.
+ *
+ * For more information, see http://doc.akka.io/docs/akka/current/java/persistence.html.
  */
 public final class LetterCounterActor extends UntypedPersistentActor {
-
-    /**
-     * Number of letters in the longest word received:
-     */
-    private Integer longestWord = 0;
 
     @Override
     public void onReceiveRecover(Object event) {
 
-        if (event instanceof Integer) {
-            longestWord = (Integer) event;
-        }
+        // Your code goes here...
     }
 
     @Override
     public void onReceiveCommand(Object command) {
-        if (command instanceof String) {
-            int length = ((String) command).length();
-            if (length > longestWord) {
-                persist(length, param -> longestWord = param);
-            }
-        } else if (command instanceof GetLongestWordCount) {
-            sender().tell(longestWord, self());
-        }
+
+        // Your code goes here...
     }
 
     @Override
